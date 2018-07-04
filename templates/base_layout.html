@@ -1,0 +1,41 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Djangoautic</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header class="wrapper">
+    
+        <h1><a href="{% url 'home' %}">Django<img src="{% static 'home_16px.png' %}" alt="">nautic</a></h1>
+        <nav>
+            <ul><!--ログイン状態なら表示されるブロック-->
+                {% if user.is_authenticated %}<!--login True hyouji-->
+                <li>
+                    <form class="logout-link" action="{% url 'accounts:logout' %}" method="POST">
+                        {% csrf_token %}
+
+                        <button type="submit">Logout</button>
+
+                    </form>
+                </li>
+                    <li><a href="{% url 'articles:create' %}" class="highlight">New Article</a></li>
+                {% else %}
+                <!--ログイン済みで無かったら表示　ログイン、サインアップリンク表示-->
+                    <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                    <li><a href="{% url 'accounts:signup' %}">Signup</a></li>
+                {% endif %}
+
+            </ul>
+
+
+        </nav>
+    </header>
+    <div class="wrapper">    
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
